@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { initAdminData, getLeads, getInvoices, getClients, getPayments } from './adminData';
+import { getLeads, getInvoices, getClients, getPayments } from './adminData';
 import './AdminLayout.css';
 import './Dashboard.css';
 

@@ -33,7 +33,6 @@ export default function Payments() {
   const close    = () => { setModal(null); setActive(null); };
 
   const handleSave = async () => {
-    const all = getPayments();
     const toSave = { ...active };
     
     toSave.amount = Number(toSave.amount);

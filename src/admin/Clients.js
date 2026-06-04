@@ -28,7 +28,6 @@ export default function Clients() {
   const close    = () => { setModal(null); setActive(null); };
 
   const handleSave = async () => {
-    const all = getClients();
     const toSave = { ...active };
     
     toSave.value = Number(toSave.value);

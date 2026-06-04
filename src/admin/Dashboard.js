@@ -76,7 +76,10 @@ export default function Dashboard() {
       const [l, i, c, p] = await Promise.all([
         getLeads(), getInvoices(), getClients(), getPayments()
       ]);
-      setLeads(l); setInvoices(i); setClients(c); setPayments(p);
+      setLeads(Array.isArray(l) ? l : []);
+      setInvoices(Array.isArray(i) ? i : []);
+      setClients(Array.isArray(c) ? c : []);
+      setPayments(Array.isArray(p) ? p : []);
     }
     load();
   }, []);

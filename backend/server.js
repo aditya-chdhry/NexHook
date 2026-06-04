@@ -46,6 +46,13 @@ async function ensureDbConnected(req, res, next) {
           console.log('🛠️ Default admin created (admin / nexhook2024)');
         }
 
+        const adityaExists = await AdminUser.findOne({ username: 'aditya_nexhook' });
+        if (!adityaExists) {
+          const hashedPassword = await bcrypt.hash('Adityas12@#', 10);
+          await AdminUser.create({ username: 'aditya_nexhook', password: hashedPassword });
+          console.log('🛠️ Custom admin created (aditya_nexhook / Adityas12@#)');
+        }
+
         // Seed default social metrics if empty
         const metricExists = await SocialMetric.findOne({ platform: 'aggregated' });
         if (!metricExists) {

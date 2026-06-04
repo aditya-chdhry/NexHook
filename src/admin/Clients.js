@@ -14,7 +14,10 @@ export default function Clients() {
   const [modal, setModal]     = useState(null);
   const [active, setActive]   = useState(null);
 
-  const reload = async () => setClients(await getClients());
+  const reload = async () => {
+    const data = await getClients();
+    setClients(Array.isArray(data) ? data : []);
+  };
   useEffect(() => { reload(); }, []);
 
   const filtered = clients.filter(c => {

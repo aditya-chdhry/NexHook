@@ -82,7 +82,7 @@ export default function SalesTeam() {
 
   const loadAttributions = async () => {
     const data = await getSalesAttributions();
-    setAttributions(data);
+    setAttributions(Array.isArray(data) ? data : []);
   };
 
   const triggerToast = (msg) => {

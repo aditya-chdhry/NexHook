@@ -8,8 +8,11 @@ export default function Tasks() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeTask, setActiveTask] = useState(null);
 
+  const reload = async () => {
+    const data = await getTasks();
+    setTasks(Array.isArray(data) ? data : []);
+  };
   useEffect(() => { reload(); }, []);
-  const reload = async () => setTasks(await getTasks());
 
   const openNew = () => {
     setActiveTask({ title:'', description:'', assigneeName:'', assigneeEmail:'', role:'', status:'todo', dueDate:'' });

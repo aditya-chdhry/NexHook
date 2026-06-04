@@ -9,8 +9,11 @@ export default function Meetings() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeMtg, setActiveMtg] = useState(null);
 
+  const reload = async () => {
+    const data = await getMeetings();
+    setMeetings(Array.isArray(data) ? data : []);
+  };
   useEffect(() => { reload(); }, []);
-  const reload = async () => setMeetings(await getMeetings());
 
   const openNew = () => {
     setActiveMtg({

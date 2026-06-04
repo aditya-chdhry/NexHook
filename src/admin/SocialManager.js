@@ -77,7 +77,7 @@ export default function SocialManager() {
 
   const loadMetrics = async () => {
     const data = await getSocialMetrics();
-    setMetrics(data);
+    setMetrics(Array.isArray(data) ? data : []);
   };
 
   const addBroadcastLog = (msg) => {

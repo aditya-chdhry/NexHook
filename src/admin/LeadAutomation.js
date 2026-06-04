@@ -52,7 +52,10 @@ export default function LeadAutomation() {
     }
   }, [logs]);
 
-  const reload = async () => setLeads(await getOutreachLeads());
+  const reload = async () => {
+    const data = await getOutreachLeads();
+    setLeads(Array.isArray(data) ? data : []);
+  };
 
   const addLog = (msg, type = 'info') => {
     const time = new Date().toLocaleTimeString();

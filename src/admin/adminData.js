@@ -5,10 +5,16 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
 /* ─── Auth ─── */
 export const isAdminLoggedIn = () => !!sessionStorage.getItem('nexhook_token');
 
-export const getAuthHeaders = () => ({
-  'Content-Type': 'application/json',
-  'Authorization': `Bearer ${sessionStorage.getItem('nexhook_token')}`
-});
+export const getAuthHeaders = () => {
+  const token = sessionStorage.getItem('nexhook_token');
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
 
 export async function adminLogin(username, password) {
   try {
@@ -50,28 +56,54 @@ export async function changePassword(oldPassword, newPassword, newUsername) {
 
 /* ─── Generic Fetch Helpers ─── */
 async function fetchAPI(endpoint) {
-  const res = await fetch(`${API_URL}/${endpoint}`, { headers: getAuthHeaders() });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/${endpoint}`, { headers: getAuthHeaders() });
+    if (!res.ok) {
+      console.warn(`API response not OK for ${endpoint}: status ${res.status}`);
+      return [];
+    }
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error(`fetchAPI failed for ${endpoint}:`, err);
+    return [];
+  }
 }
 
 async function saveAPI(endpoint, item) {
-  const method = item._id ? 'PUT' : 'POST';
-  const url = item._id ? `${API_URL}/${endpoint}/${item.id}` : `${API_URL}/${endpoint}`;
-  
-  const res = await fetch(url, {
-    method,
-    headers: getAuthHeaders(),
-    body: JSON.stringify(item)
-  });
-  return res.json();
+  try {
+    const method = item._id ? 'PUT' : 'POST';
+    const url = item._id ? `${API_URL}/${endpoint}/${item.id}` : `${API_URL}/${endpoint}`;
+    
+    const res = await fetch(url, {
+      method,
+      headers: getAuthHeaders(),
+      body: JSON.stringify(item)
+    });
+    if (!res.ok) {
+      console.warn(`saveAPI response not OK for ${endpoint}: status ${res.status}`);
+      return { error: `Failed to save ${endpoint}` };
+    }
+    const data = await res.json();
+    return data || {};
+  } catch (err) {
+    console.error(`saveAPI failed for ${endpoint}:`, err);
+    return { error: err.message };
+  }
 }
 
 async function deleteAPI(endpoint, id) {
-  await fetch(`${API_URL}/${endpoint}/${id}`, {
-    method: 'DELETE',
-    headers: getAuthHeaders()
-  });
+  try {
+    const res = await fetch(`${API_URL}/${endpoint}/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) {
+      console.warn(`deleteAPI response not OK for ${endpoint}: status ${res.status}`);
+    }
+  } catch (err) {
+    console.error(`deleteAPI failed for ${endpoint}:`, err);
+  }
 }
 
 /* ─── Getters ─── */

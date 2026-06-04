@@ -12,7 +12,7 @@ export default function ChatbotData() {
 
   const reload = async () => {
     const data = await getChatbotData();
-    setConversations(data);
+    setConversations(Array.isArray(data) ? data : []);
   };
 
   useEffect(() => {

@@ -11,7 +11,10 @@ export default function Leads() {
   const [modal, setModal]     = useState(null); // null | 'view' | 'edit' | 'add'
   const [active, setActive]   = useState(null);
 
-  const reload = async () => setLeads(await getLeads());
+  const reload = async () => {
+    const data = await getLeads();
+    setLeads(Array.isArray(data) ? data : []);
+  };
   useEffect(() => { reload(); }, []);
 
   const filtered = leads.filter(l => {

@@ -14,7 +14,10 @@ export default function Invoices() {
   const [modal, setModal]       = useState(null);
   const [active, setActive]     = useState(null);
 
-  const reload = async () => setInvoices(await getInvoices());
+  const reload = async () => {
+    const data = await getInvoices();
+    setInvoices(Array.isArray(data) ? data : []);
+  };
   useEffect(() => { reload(); }, []);
 
   const filtered = invoices.filter(i => {

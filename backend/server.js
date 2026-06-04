@@ -18,44 +18,82 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Fallback to local MongoDB if URI is not provided in .env
+let dbError = null;
+let connectPromise = null;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nexhook';
-mongoose.connect(MONGO_URI).then(async () => {
-  console.log('✅ MongoDB Connected to', MONGO_URI.split('@').pop());
-  
-  const adminExists = await AdminUser.findOne({ username: 'admin' });
-  if (!adminExists) {
-    const hashedPassword = await bcrypt.hash('nexhook2024', 10);
-    await AdminUser.create({ username: 'admin', password: hashedPassword });
-    console.log('🛠️ Default admin created (admin / nexhook2024)');
+
+async function ensureDbConnected(req, res, next) {
+  // If accessing public assets or frontend files, we don't strictly need to block on DB connection
+  // but since Express routes everything, we block for all /api requests.
+  if (!req.path.startsWith('/api')) {
+    return next();
   }
 
-  // Seed default social metrics if empty
-  const metricExists = await SocialMetric.findOne({ platform: 'aggregated' });
-  if (!metricExists) {
-    await SocialMetric.create({ platform: 'aggregated', visitors: 4820, followers: 2450, interested: 680, unfollows: 42, reposts: 340, dms: 185 });
-    await SocialMetric.create({ platform: 'linkedin', visitors: 2100, followers: 1200, interested: 310, unfollows: 12, reposts: 210, dms: 95 });
-    await SocialMetric.create({ platform: 'instagram', visitors: 1320, followers: 750, interested: 190, unfollows: 22, reposts: 65, dms: 55 });
-    await SocialMetric.create({ platform: 'reddit', visitors: 980, followers: 320, interested: 110, unfollows: 6, reposts: 55, dms: 20 });
-    await SocialMetric.create({ platform: 'whatsapp', visitors: 420, followers: 180, interested: 70, unfollows: 2, reposts: 10, dms: 15 });
-    console.log('📈 Seeded default social media manager metrics');
+  if (mongoose.connection.readyState === 1) {
+    return next();
   }
 
-  // Seed default sales attribution if empty
-  const attrExists = await SalesAttribution.countDocuments();
-  if (attrExists === 0) {
-    await SalesAttribution.create({ platform: 'LinkedIn', clientCount: 28 });
-    await SalesAttribution.create({ platform: 'Google Maps', clientCount: 16 });
-    await SalesAttribution.create({ platform: 'Apollo', clientCount: 12 });
-    await SalesAttribution.create({ platform: 'Reddit', clientCount: 7 });
-    await SalesAttribution.create({ platform: 'Instagram', clientCount: 4 });
-    await SalesAttribution.create({ platform: 'Referral', clientCount: 3 });
-    console.log('📊 Seeded default sales attribution platforms');
+  if (!connectPromise) {
+    console.log('Initializing database connection...');
+    connectPromise = mongoose.connect(MONGO_URI)
+      .then(async () => {
+        console.log('✅ MongoDB Connected successfully!');
+        
+        const adminExists = await AdminUser.findOne({ username: 'admin' });
+        if (!adminExists) {
+          const hashedPassword = await bcrypt.hash('nexhook2024', 10);
+          await AdminUser.create({ username: 'admin', password: hashedPassword });
+          console.log('🛠️ Default admin created (admin / nexhook2024)');
+        }
+
+        // Seed default social metrics if empty
+        const metricExists = await SocialMetric.findOne({ platform: 'aggregated' });
+        if (!metricExists) {
+          await SocialMetric.create({ platform: 'aggregated', visitors: 4820, followers: 2450, interested: 680, unfollows: 42, reposts: 340, dms: 185 });
+          await SocialMetric.create({ platform: 'linkedin', visitors: 2100, followers: 1200, interested: 310, unfollows: 12, reposts: 210, dms: 95 });
+          await SocialMetric.create({ platform: 'instagram', visitors: 1320, followers: 750, interested: 190, unfollows: 22, reposts: 65, dms: 55 });
+          await SocialMetric.create({ platform: 'reddit', visitors: 980, followers: 320, interested: 110, unfollows: 6, reposts: 55, dms: 20 });
+          await SocialMetric.create({ platform: 'whatsapp', visitors: 420, followers: 180, interested: 70, unfollows: 2, reposts: 10, dms: 15 });
+          console.log('📈 Seeded default social media manager metrics');
+        }
+
+        // Seed default sales attribution if empty
+        const attrExists = await SalesAttribution.countDocuments();
+        if (attrExists === 0) {
+          await SalesAttribution.create({ platform: 'LinkedIn', clientCount: 28 });
+          await SalesAttribution.create({ platform: 'Google Maps', clientCount: 16 });
+          await SalesAttribution.create({ platform: 'Apollo', clientCount: 12 });
+          await SalesAttribution.create({ platform: 'Reddit', clientCount: 7 });
+          await SalesAttribution.create({ platform: 'Instagram', clientCount: 4 });
+          await SalesAttribution.create({ platform: 'Referral', clientCount: 3 });
+          console.log('📊 Seeded default sales attribution platforms');
+        }
+      })
+      .catch(err => {
+        dbError = err.message;
+        console.error('❌ MongoDB Connection Error:', err);
+        connectPromise = null; // reset to allow retry
+        throw err;
+      });
   }
-}).catch(err => {
-  console.log('❌ MongoDB Error: Failed to connect to DB. Make sure MongoDB is running.');
-  console.error(err.message);
+
+  try {
+    await connectPromise;
+    next();
+  } catch (err) {
+    res.status(500).json({ error: 'Database connection failed', details: err.message });
+  }
+}
+
+app.use(ensureDbConnected);
+
+app.get('/api/db-status', (req, res) => {
+  res.json({
+    readyState: mongoose.connection.readyState,
+    readyStateText: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState],
+    error: dbError,
+    uri: MONGO_URI.replace(/:([^@]+)@/, ':****@')
+  });
 });
 
 let transporter = null;

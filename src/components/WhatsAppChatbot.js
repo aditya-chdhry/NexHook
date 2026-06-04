@@ -4,6 +4,10 @@ import './WhatsAppChatbot.css';
 // Configure the WhatsApp phone number (with country code, without + or spaces)
 const WHATSAPP_NUMBER = "919315573429"; // Replace with NexHook's actual WhatsApp Business number
 
+const API_PREFIX = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? ''
+  : '/_/backend';
+
 const SUGGESTIONS = [
   "Web Dev pricing 🌐",
   "Video editing rates 🎬",
@@ -78,7 +82,7 @@ export default function WhatsAppChatbot() {
     setIsTyping(true);
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(`${API_PREFIX}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text, sessionId })
@@ -120,7 +124,7 @@ export default function WhatsAppChatbot() {
   const handleWhatsAppRedirect = async (customText) => {
     // Call backend to log the click (converted status in DB)
     try {
-      await fetch(`/api/chatbot-data/${sessionId}/whatsapp-click`, {
+      await fetch(`${API_PREFIX}/api/chatbot-data/${sessionId}/whatsapp-click`, {
         method: 'POST'
       });
     } catch (e) {

@@ -1,0 +1,164 @@
+.al-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #04050a;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Orbs ─────────────────────────────────────────────────── */
+.al-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.al-orb1 {
+  width: 520px; height: 520px;
+  top: -160px; right: -120px;
+  background: radial-gradient(circle, rgba(36,89,231,.5) 0%, transparent 70%);
+  animation: orbf 9s ease-in-out infinite alternate;
+}
+.al-orb2 {
+  width: 420px; height: 420px;
+  bottom: -120px; left: -100px;
+  background: radial-gradient(circle, rgba(56,189,248,.4) 0%, transparent 70%);
+  animation: orbf 12s ease-in-out infinite alternate-reverse;
+}
+@keyframes orbf {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(28px,18px) scale(1.06); }
+}
+
+/* ─── Grid bg ───────────────────────────────────────────────── */
+.al-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(36,89,231,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36,89,231,.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* ─── Card ──────────────────────────────────────────────────── */
+.al-card {
+  position: relative; z-index: 2;
+  background: rgba(11,13,24,.88);
+  border: 1px solid rgba(36,89,231,.22);
+  border-radius: 24px;
+  padding: 48px 44px;
+  width: 100%; max-width: 440px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 28px 80px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.04);
+  animation: cardIn .5s cubic-bezier(.22,1,.36,1);
+}
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(28px); }
+  to   { opacity:1; transform:none; }
+}
+
+/* ─── Logo ──────────────────────────────────────────────────── */
+.al-logo {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+}
+.al-logo-icon {
+  width: 42px; height: 42px; border-radius: 11px;
+  background: linear-gradient(135deg, #2459e7, #38bdf8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; font-weight: 900; color: #fff;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  box-shadow: 0 6px 20px rgba(36,89,231,.4);
+}
+.al-logo-text {
+  font-size: 1.15rem; font-weight: 700; color: #f0f4ff;
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+/* ─── Header ────────────────────────────────────────────────── */
+.al-badge {
+  display: inline-block;
+  font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.22);
+  border-radius: 50px; padding: 4px 13px; margin-bottom: 14px;
+}
+.al-title {
+  font-size: 1.85rem; font-weight: 800; letter-spacing: -.03em;
+  color: #f0f4ff; font-family: 'Bricolage Grotesque', sans-serif; margin-bottom: 8px;
+}
+.al-sub { font-size: .88rem; color: #7689ad; margin-bottom: 32px; }
+
+/* ─── Form ──────────────────────────────────────────────────── */
+.al-form { display: flex; flex-direction: column; gap: 20px; }
+.al-fg   { display: flex; flex-direction: column; gap: 8px; }
+.al-fg label {
+  font-size: .75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .09em; color: #7689ad;
+}
+
+.al-inp-wrap { position: relative; display: flex; align-items: center; }
+.al-inp-icon {
+  position: absolute; left: 14px; width: 16px; height: 16px;
+  stroke: #3b4d6a; pointer-events: none; flex-shrink: 0;
+}
+.al-inp-wrap input {
+  width: 100%;
+  background: rgba(7,8,16,.8); border: 1px solid rgba(36,89,231,.22);
+  border-radius: 12px; padding: 14px 16px 14px 44px;
+  color: #f0f4ff; font-family: 'Inter', sans-serif; font-size: .92rem;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.al-inp-wrap input:focus {
+  border-color: #2459e7; box-shadow: 0 0 0 3px rgba(36,89,231,.14);
+}
+.al-inp-wrap input::placeholder { color: #3b4d6a; }
+
+.al-eye {
+  position: absolute; right: 12px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+  color: #3b4d6a; display: flex; align-items: center;
+  transition: color .2s;
+}
+.al-eye:hover { color: #7689ad; }
+.al-eye svg { width: 16px; height: 16px; stroke: currentColor; }
+
+/* ─── Error ─────────────────────────────────────────────────── */
+.al-error {
+  background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25);
+  border-radius: 10px; padding: 11px 16px;
+  font-size: .84rem; color: #f87171;
+}
+
+/* ─── Button ────────────────────────────────────────────────── */
+.al-btn {
+  background: linear-gradient(135deg,#2459e7,#1a46c5);
+  color: #fff; border: none; border-radius: 12px;
+  padding: 16px; font-size: .95rem; font-weight: 700;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: all .22s; box-shadow: 0 8px 28px rgba(36,89,231,.38);
+  display: flex; align-items: center; justify-content: center; margin-top: 4px;
+}
+.al-btn:hover:not(:disabled) {
+  transform: translateY(-2px); box-shadow: 0 12px 36px rgba(36,89,231,.52);
+}
+.al-btn:disabled { opacity: .7; cursor: not-allowed; }
+
+.al-spinner {
+  width: 20px; height: 20px;
+  border: 2.5px solid rgba(255,255,255,.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin .75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Hint ──────────────────────────────────────────────────── */
+.al-hint {
+  margin-top: 24px; font-size: .76rem; color: #3b4d6a;
+  display: flex; align-items: center; gap: 6px; justify-content: center;
+}
+.al-hint svg { stroke: #3b4d6a; }
+
+@media (max-width: 500px) {
+  .al-card { padding: 36px 24px; }
+  .al-title { font-size: 1.5rem; }
+}

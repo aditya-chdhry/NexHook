@@ -1,0 +1,81 @@
+footer {
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 60px 64px 28px;
+}
+.foot-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; margin-bottom: 48px;
+}
+.foot-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.foot-logo-text {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.4rem; font-weight: 800; color: var(--white);
+}
+.foot-logo-text span { color: var(--cyan); }
+.foot-logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.foot-brand p { font-size: .83rem; color: var(--mid); line-height: 1.72; max-width: 280px; }
+
+.foot-col h4 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: .72rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--mid); margin-bottom: 18px;
+}
+.foot-col ul { display: flex; flex-direction: column; gap: 10px; }
+.foot-col ul li button,
+.foot-col ul li a,
+.foot-col ul li span {
+  font-size: .83rem; color: var(--muted);
+  transition: color .2s; background: none; border: none;
+  cursor: pointer; padding: 0; text-align: left; text-decoration: none;
+}
+.foot-col ul li button:hover,
+.foot-col ul li a:hover { color: var(--cyan); }
+
+.foot-bottom {
+  border-top: 1px solid var(--border); padding-top: 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.foot-bottom p { font-size: .78rem; color: var(--muted); }
+.foot-soc { display: flex; gap: 10px; }
+.foot-soc a {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  color: var(--mid);
+}
+
+.foot-soc a:hover {
+  transform: scale(1.2) translateY(-4px);
+  border-color: transparent;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.soc-insta:hover { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%) !important; color: white !important; }
+.soc-linken:hover { background: #0A66C2 !important; color: white !important; }
+.soc-yt:hover { background: #FF0000 !important; color: white !important; }
+.soc-wa:hover { background: #25D366 !important; color: white !important; }
+
+@media (max-width: 900px) {
+  footer { padding: 48px 24px 24px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 500px) {
+  .foot-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 901px) {
+  .foot-bottom {
+    padding-right: 80px;
+  }
+}

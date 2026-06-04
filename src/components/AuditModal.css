@@ -1,0 +1,164 @@
+/* ── Audit Modal Backdrop ── */
+.audit-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 5, 10, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000;
+  padding: 20px;
+  animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Light Mode Overrides for Backdrop */
+body.light-mode .audit-modal-backdrop {
+  background: rgba(249, 251, 255, 0.75);
+}
+
+/* ── Modal Container ── */
+.audit-modal-container {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  width: 100%;
+  max-width: 600px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border);
+  animation: modalSlideUp 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+body.light-mode .audit-modal-container {
+  box-shadow: 0 20px 40px rgba(26, 75, 214, 0.08), 0 0 0 1px var(--border);
+}
+
+/* ── Custom Scrollbar for Modal ── */
+.audit-modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+.audit-modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.audit-modal-container::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 10px;
+}
+
+/* ── Close Button ── */
+.audit-modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  color: var(--mid);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.audit-modal-close:hover {
+  background: var(--blue);
+  border-color: var(--cyan);
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.05);
+  box-shadow: 0 0 12px var(--glow);
+}
+
+/* ── Header ── */
+.audit-modal-header {
+  margin-bottom: 28px;
+}
+
+.audit-modal-header h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.audit-modal-header p {
+  font-size: 0.88rem;
+  color: var(--mid);
+  line-height: 1.5;
+}
+
+.audit-modal-header strong {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* Form Row & Groups (inherits mostly from index.css & AuditContact.css) */
+.audit-modal-container .form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.audit-modal-container .fg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.audit-modal-container .fg label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--mid);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Animations ── */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 600px) {
+  .audit-modal-container {
+    padding: 30px 20px 24px;
+    border-radius: var(--r);
+  }
+  
+  .audit-modal-container .form-row-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .audit-modal-close {
+    top: 16px;
+    right: 16px;
+  }
+  
+  .audit-modal-header h3 {
+    font-size: 1.35rem;
+  }
+}

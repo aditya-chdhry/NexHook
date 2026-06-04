@@ -1,0 +1,184 @@
+/* ── GLOBAL RESET & TOKENS ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+.App { width: 100%; transition: background-color 0.35s ease; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; max-width: 100%; }
+button { font-family: 'Inter', sans-serif; transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.2s; }
+
+:root {
+  --bg:       #04050a;
+  --bg2:      #070810;
+  --card:     #0c0e1a;
+  --card2:    #101325;
+  --blue:     #2459e7;
+  --blue2:    #1e4dd4;
+  --glow:     rgba(36,89,231,.25);
+  --cyan:     #38bdf8;
+  --white:    #f0f4ff;
+  --mid:      #7689ad;
+  --muted:    #3b4d6a;
+  --border:   rgba(36,89,231,.18);
+  --border2:  rgba(36,89,231,.32);
+  --r:        14px;
+  --r2:       22px;
+
+  /* Theme-specific custom variables */
+  --glass-bg:       rgba(255, 255, 255, 0.04);
+  --glass-border:   rgba(255, 255, 255, 0.1);
+  --glass-border2:  rgba(255, 255, 255, 0.15);
+  --nav-solid-bg:   rgba(8, 10, 22, 0.7);
+  --radial-glow:    rgba(36, 89, 231, 0.16);
+  --radial-glow2:   rgba(56, 189, 248, 0.07);
+  --grid-color:     rgba(36, 89, 231, 0.04);
+  --text-stroke:    rgba(56, 189, 248, 0.6);
+  --card-shadow:    rgba(36, 89, 231, 0.15);
+}
+
+body.light-mode {
+  --bg:       #f9fbff;
+  --bg2:      #f0f4fc;
+  --card:     #ffffff;
+  --card2:    #e5ecf9;
+  --blue:     #1a4bd6;
+  --blue2:    #113cb3;
+  --glow:     rgba(26, 75, 214, 0.1);
+  --cyan:     #0284c7;
+  --white:    #090d16;
+  --mid:      #52607a;
+  --muted:    #8b9bb4;
+  --border:   rgba(26, 75, 214, 0.12);
+  --border2:  rgba(26, 75, 214, 0.25);
+
+  /* Light-mode overrides */
+  --glass-bg:       rgba(26, 75, 214, 0.03);
+  --glass-border:   rgba(26, 75, 214, 0.08);
+  --glass-border2:  rgba(26, 75, 214, 0.15);
+  --nav-solid-bg:   rgba(249, 251, 255, 0.85);
+  --radial-glow:    rgba(26, 75, 214, 0.06);
+  --radial-glow2:   rgba(2, 132, 199, 0.03);
+  --grid-color:     rgba(26, 75, 214, 0.025);
+  --text-stroke:    rgba(2, 132, 199, 0.7);
+  --card-shadow:    rgba(26, 75, 214, 0.08);
+}
+
+
+
+/* ── Section base ── */
+.section-wrap     { padding: 70px 40px; overflow: hidden; position: relative; transition: background-color 0.35s ease; }
+.section-wrap-alt { padding: 70px 40px; background: var(--bg2); overflow: hidden; position: relative; transition: background-color 0.35s ease; }
+
+/* ── Eyebrow ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 16px;
+}
+.eyebrow::before {
+  content: ''; display: block;
+  width: 18px; height: 1.5px; background: var(--cyan);
+}
+
+/* ── Display title ── */
+.sec-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800; letter-spacing: -.04em; line-height: 1.1;
+  max-width: 100%;
+}
+.sec-title span { color: var(--cyan); }
+.sec-sub {
+  font-size: .97rem; color: var(--mid);
+  line-height: 1.78; max-width: 500px; margin-top: 14px;
+}
+
+/* ── Buttons ── */
+.btn-prim {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--blue); color: #fff;
+  padding: 13px 30px; border-radius: 50px;
+  font-size: .9rem; font-weight: 600;
+  transition: all .22s; box-shadow: 0 6px 24px var(--glow);
+  border: none; cursor: pointer;
+}
+.btn-prim:hover {
+  background: var(--blue2); transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(36,89,231,.42);
+}
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border2); color: var(--white);
+  padding: 12px 30px; border-radius: 50px;
+  font-size: .9rem; font-weight: 500;
+  transition: all .22s; background: transparent; cursor: pointer;
+}
+.btn-ghost:hover { background: rgba(36,89,231,.1); border-color: var(--cyan); }
+
+/* ── Marquee ── */
+.mq-wrap {
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2); overflow: hidden;
+}
+.mq-track {
+  display: flex; gap: 60px; width: max-content;
+  animation: mq 24s linear infinite;
+}
+@keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.mq-item {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: .74rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--mid);
+  white-space: nowrap; display: flex; align-items: center; gap: 16px;
+}
+.mq-dot { width:4px; height:4px; border-radius:50%; background:var(--cyan); opacity:.5; }
+
+/* ── Scroll reveal ── */
+.rev {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.rev.vis { opacity: 1; transform: none; }
+.d1{transition-delay:.08s} .d2{transition-delay:.16s}
+.d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.4s}
+
+/* ── Tags / Badges ── */
+.tag {
+  font-size: .67rem; padding: 3px 10px; border-radius: 50px;
+  background: rgba(36,89,231,.12); color: var(--cyan);
+  border: 1px solid rgba(36,89,231,.22);
+}
+
+/* ── Form inputs (shared) ── */
+.form-inp {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+  color: var(--white); font-family: 'Inter', sans-serif;
+  font-size: .88rem; outline: none;
+  transition: border-color .2s; width: 100%;
+}
+.form-inp:focus { border-color: var(--blue); }
+.form-inp::placeholder { color: var(--muted); }
+select.form-inp { appearance: none; cursor: pointer; color: var(--mid); }
+select.form-inp option { background: var(--bg); color: var(--white); }
+textarea.form-inp { resize: vertical; min-height: 90px; }
+
+@media (max-width: 900px) {
+  .section-wrap, .section-wrap-alt { padding: 50px 20px; text-align: center; }
+  .eyebrow { justify-content: center; }
+  .sec-sub { margin: 14px auto 0; }
+}
+@media (max-width: 600px) {
+  .sec-title { font-size: clamp(1.8rem, 8vw, 2.4rem); letter-spacing: -.03em; }
+  .sec-sub { font-size: 0.9rem; }
+}

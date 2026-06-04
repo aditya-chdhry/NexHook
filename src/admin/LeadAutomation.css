@@ -1,0 +1,277 @@
+/* ─── Lead Automation Workflow Graph ─── */
+.la-graph-section {
+  background: #07080f;
+  border: 1px solid rgba(36,89,231,.15);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.la-graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.la-graph-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f0f4ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.la-status-tag {
+  background: rgba(56,189,248,0.1);
+  color: #38bdf8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(56,189,248,0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.la-status-tag.active {
+  background: rgba(74,222,128,0.1);
+  color: #4ade80;
+  border-color: rgba(74,222,128,0.25);
+  animation: pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  from { box-shadow: 0 0 4px rgba(74,222,128,0.1); }
+  to { box-shadow: 0 0 12px rgba(74,222,128,0.3); }
+}
+
+/* Node layout grid matching standard diagram workflow */
+.la-nodes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.la-node {
+  background: #0c0e1a;
+  border: 1.5px solid rgba(36,89,231,.12);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.la-node-num {
+  width: 22px;
+  height: 22px;
+  background: rgba(36,89,231,.15);
+  color: #7689ad;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.la-node-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  transition: transform 0.3s;
+}
+.la-node-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #dde3f0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.la-node-desc {
+  font-size: 0.72rem;
+  color: #7689ad;
+}
+
+/* States */
+.la-node.pending {
+  opacity: 0.45;
+}
+.la-node.processing {
+  border-color: #38bdf8;
+  background: rgba(56,189,248,0.05);
+  box-shadow: 0 0 15px rgba(56,189,248,0.25);
+  transform: translateY(-3px);
+}
+.la-node.processing .la-node-num {
+  background: #38bdf8;
+  color: #04050a;
+}
+.la-node.processing .la-node-icon {
+  transform: scale(1.15);
+  animation: spinnerRotate 2s linear infinite;
+}
+.la-node.success {
+  border-color: #34d399;
+  background: rgba(52,211,153,0.03);
+  box-shadow: 0 0 10px rgba(52,211,153,0.1);
+}
+.la-node.success .la-node-num {
+  background: #34d399;
+  color: #04050a;
+}
+.la-node.failed {
+  border-color: #f87171;
+  background: rgba(248,113,113,0.03);
+}
+
+/* Console window */
+.la-console {
+  background: #030408;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 16px;
+  height: 120px;
+  overflow-y: auto;
+  font-size: 0.78rem;
+  color: #4ade80;
+  line-height: 1.5;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+}
+.la-console-line {
+  margin-bottom: 4px;
+}
+.la-console-line.info {
+  color: #38bdf8;
+}
+.la-console-line.warn {
+  color: #fbbf24;
+}
+.la-console-line.err {
+  color: #f87171;
+}
+
+@keyframes spinnerRotate {
+  0% { transform: scale(1.15) rotate(0deg); }
+  100% { transform: scale(1.15) rotate(360deg); }
+}
+
+/* Layout for Export Buttons */
+.la-action-buttons {
+  display: flex;
+  gap: 12px;
+}
+.la-btn-export {
+  background: rgba(36,89,231,0.08);
+  border: 1px solid rgba(36,89,231,0.25);
+  color: #dde3f0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.la-btn-export:hover {
+  background: rgba(36,89,231,0.18);
+  border-color: #2459e7;
+  color: #f0f4ff;
+  transform: translateY(-1px);
+}
+.la-btn-export.pdf:hover {
+  background: rgba(248,113,113,0.12);
+  border-color: #f87171;
+  color: #fef2f2;
+}
+
+/* Custom PDF Report Printable layout */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-area, #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    color: black !important;
+    padding: 20px;
+  }
+  .ad-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .ad-table th, .ad-table td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    color: black !important;
+    background: transparent !important;
+  }
+}
+
+/* ─── AI Sourcing Controls ─── */
+.la-control-panel {
+  background: #07080f;
+  border: 1px solid rgba(36,89,231,.15);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+.la-control-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-end;
+}
+.la-control-row-2 {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr;
+  gap: 16px;
+  align-items: flex-end;
+}
+@media (max-width: 900px) {
+  .la-control-row, .la-control-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+.la-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.la-input-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7689ad;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.la-input {
+  background: #0c0e1a;
+  border: 1px solid rgba(36,89,231,.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #f0f4ff;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.la-input:focus {
+  border-color: #38bdf8;
+  outline: none;
+  box-shadow: 0 0 8px rgba(56,189,248,0.15);
+}
+

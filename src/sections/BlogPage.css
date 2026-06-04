@@ -1,0 +1,186 @@
+/* ── Blog Page Styles ── */
+.blog-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Hero ── */
+.blogpage-hero {
+  padding: 130px 40px 50px;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.blogpage-hero .eyebrow { justify-content: center; }
+.blogpage-hero .sec-sub { margin: 14px auto 0; max-width: 800px; }
+
+/* ── Grid Section ── */
+.blogpage-grid-section {
+  padding: 20px 40px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blogpage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* ── Card ── */
+.blogpage-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.blogpage-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border2);
+  box-shadow: 0 16px 48px var(--card-shadow);
+}
+
+.blogpage-card-cover {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg2);
+}
+.blogpage-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.blogpage-card:hover .blogpage-card-img {
+  transform: scale(1.06);
+}
+
+.blogpage-card-body {
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blogpage-card-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 12px;
+  transition: color .2s ease;
+}
+.blogpage-card:hover .blogpage-card-title {
+  color: var(--cyan);
+}
+
+.blogpage-card-excerpt {
+  font-size: .86rem;
+  color: var(--mid);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.blogpage-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .74rem;
+  color: var(--muted);
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.blogpage-card-author {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* ── Read Article Link ── */
+.blogpage-read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cyan);
+  font-size: .84rem;
+  font-weight: 600;
+  transition: gap .2s, color .2s;
+}
+.blogpage-read-link svg {
+  transition: transform .2s;
+}
+.blogpage-card:hover .blogpage-read-link {
+  color: var(--white);
+}
+.blogpage-card:hover .blogpage-read-link svg {
+  transform: translateX(4px);
+}
+
+/* ── CTA ── */
+.blogpage-cta {
+  text-align: center;
+  padding: 60px 40px 70px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.blogpage-cta h2 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.blogpage-cta p {
+  font-size: .95rem;
+  color: var(--mid);
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+/* ── Footer ── */
+.blogpage-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 40px;
+  font-size: .8rem;
+  color: var(--muted);
+}
+.blogpage-footer a {
+  color: var(--mid);
+  text-decoration: none;
+  transition: color .2s;
+}
+.blogpage-footer a:hover { color: var(--cyan); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .blogpage-hero { padding: 120px 20px 40px; }
+  .blogpage-grid-section { padding: 20px 20px 60px; }
+  .blogpage-grid { grid-template-columns: 1fr; }
+  .blogpage-cta { padding: 50px 20px 60px; }
+  .blogpage-footer { 
+    flex-direction: column; 
+    gap: 8px; 
+    text-align: center; 
+    padding: 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .blogpage-card-cover { height: 160px; }
+  .blogpage-card-body { padding: 20px 18px; }
+  .blogpage-card-title { font-size: 1.05rem; }
+}

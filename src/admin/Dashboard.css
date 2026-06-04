@@ -1,0 +1,53 @@
+/* Dashboard-specific styles */
+
+.db-charts-row {
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.db-chart-card { flex: 1; min-width: 220px; }
+
+/* ─── Bar chart ──────────────────────────────────────────────── */
+.db-chart-wrap {
+  display: flex; align-items: flex-end; gap: 8px;
+  height: 140px; padding-bottom: 24px; position: relative;
+}
+.db-bar-col {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 0; min-width: 28px;
+}
+.db-bar-track {
+  width: 100%; flex: 1; display: flex;
+  align-items: flex-end; border-radius: 6px;
+  background: rgba(36,89,231,.07);
+  overflow: hidden;
+}
+.db-bar-fill {
+  width: 100%; border-radius: 6px 6px 0 0;
+  transition: height .6s cubic-bezier(.22,1,.36,1);
+  min-height: 3px;
+}
+.db-bar-label {
+  font-size: .65rem; color: #3b4d6a; margin-top: 6px;
+  white-space: nowrap; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+}
+.db-bar-val {
+  font-size: .7rem; color: #7689ad; font-weight: 700;
+  position: absolute; display: none;
+}
+.db-bar-col:hover .db-bar-val { display: block; }
+
+/* ─── Donut chart ────────────────────────────────────────────── */
+.db-donut-wrap {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.db-donut-svg { width: 110px; height: 110px; flex-shrink: 0; }
+.db-donut-legend { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 100px; }
+.db-legend-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .78rem; color: #7689ad;
+}
+.db-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.db-legend-val { margin-left: auto; font-weight: 700; color: #f0f4ff; }
+
+@media (max-width: 900px) {
+  .db-charts-row { flex-direction: column; }
+}

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import './WhatsAppChatbot.css';
 
 // Configure the WhatsApp phone number (with country code, without + or spaces)
-const WHATSAPP_NUMBER = "919315573429"; // Replace with NexHook's actual WhatsApp Business number
+const WHATSAPP_NUMBER = "919625591763"; // Replace with NexHook's actual WhatsApp Business number
 
 const API_PREFIX = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? ''

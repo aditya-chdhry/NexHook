@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import MainWebsite   from './MainWebsite';
 import BlogPage      from './sections/BlogPage';
 import BlogPost      from './sections/BlogPost';
@@ -22,31 +23,34 @@ import './App.css';
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/"             element={<MainWebsite />} />
-      <Route path="/blogs"        element={<BlogPage />} />
-      <Route path="/blogs/:id"    element={<BlogPost />} />
-      <Route path="/admin-login"  element={<AdminLogin />} />
-      <Route path="/admin"        element={
-        <ProtectedRoute>
-          <AdminLayout />
-        </ProtectedRoute>
-      }>
-        <Route index                    element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard"         element={<Dashboard />} />
-        <Route path="leads"             element={<Leads />} />
-        <Route path="invoices"          element={<Invoices />} />
-        <Route path="clients"           element={<Clients />} />
-        <Route path="payments"          element={<Payments />} />
-        <Route path="tasks"             element={<Tasks />} />
-        <Route path="meetings"          element={<Meetings />} />
-        <Route path="lead-automation"   element={<LeadAutomation />} />
-        <Route path="social-manager"    element={<SocialManager />} />
-        <Route path="sales-team"        element={<SalesTeam />} />
-        <Route path="chatbot-data"      element={<ChatbotData />} />
-        <Route path="settings"          element={<Settings />} />
-      </Route>
-      <Route path="/admin/invoices/:id/print" element={<ProtectedRoute><PrintInvoice /></ProtectedRoute>} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/"             element={<MainWebsite />} />
+        <Route path="/blogs"        element={<BlogPage />} />
+        <Route path="/blogs/:id"    element={<BlogPost />} />
+        <Route path="/admin-login"  element={<AdminLogin />} />
+        <Route path="/admin"        element={
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        }>
+          <Route index                    element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard"         element={<Dashboard />} />
+          <Route path="leads"             element={<Leads />} />
+          <Route path="invoices"          element={<Invoices />} />
+          <Route path="clients"           element={<Clients />} />
+          <Route path="payments"          element={<Payments />} />
+          <Route path="tasks"             element={<Tasks />} />
+          <Route path="meetings"          element={<Meetings />} />
+          <Route path="lead-automation"   element={<LeadAutomation />} />
+          <Route path="social-manager"    element={<SocialManager />} />
+          <Route path="sales-team"        element={<SalesTeam />} />
+          <Route path="chatbot-data"      element={<ChatbotData />} />
+          <Route path="settings"          element={<Settings />} />
+        </Route>
+        <Route path="/admin/invoices/:id/print" element={<ProtectedRoute><PrintInvoice /></ProtectedRoute>} />
+      </Routes>
+      <Analytics />
+    </>
   );
 }

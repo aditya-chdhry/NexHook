@@ -13,7 +13,7 @@ export const BLOGS_DATA = [
     excerpt: 'Most small businesses throw money at ads without a strategy. Here\'s a proven framework to get real ROI from your marketing spend — without burning cash.',
     date: 'Apr 28, 2026',
     readTime: '6 min read',
-    image: '/images/blog1.png',
+    image: '/images/blog1.webp',
     author: 'Aditya Chaudhary',
     content: `
 Digital marketing isn't optional anymore — it's the primary engine behind growth for businesses of all sizes. Yet, a staggering 90% of small businesses fail to see meaningful ROI from their digital efforts. The reason? They approach marketing without a structured strategy.
@@ -58,7 +58,7 @@ If you're a small business owner struggling with marketing ROI, book a free 30-m
     excerpt: 'We break down the real-world differences between React SPA and Next.js — performance, SEO, cost, and when each one makes sense for your business.',
     date: 'May 15, 2026',
     readTime: '8 min read',
-    image: '/images/blog2.png',
+    image: '/images/blog2.webp',
     author: 'Kshitij Sahu',
     content: `
 Choosing the right tech stack is one of the most critical decisions a startup founder faces. If you're building a web application in 2025, the debate often comes down to React (as a Single Page Application) versus Next.js (a full-stack React framework). Both are built on React, but they serve very different use cases.
@@ -119,7 +119,7 @@ Choose React SPA only when you're building an internal tool or authenticated app
     excerpt: 'Colour theory, visual hierarchy, and micro-interactions — the design secrets that turn visitors into paying customers in under 5 seconds.',
     date: 'Apr 30, 2026',
     readTime: '5 min read',
-    image: '/images/blog3.png',
+    image: '/images/blog3.webp',
     author: 'Devansh Awasthi',
     content: `
 A landing page has exactly 3 seconds to convince a visitor to stay. In that brief window, your design needs to communicate trust, value, and clarity — all without the visitor reading a single word. This is where design psychology comes in.
@@ -188,7 +188,7 @@ This structure works because it mirrors the natural decision-making process: att
     excerpt: 'Google ranks fast sites higher. Learn what LCP, FID, and CLS actually mean — and how to fix them without touching a single line of code.',
     date: 'Apr 12, 2026',
     readTime: '7 min read',
-    image: '/images/blog4.png',
+    image: '/images/blog4.webp',
     author: 'Arun Parashar',
     content: `
 In 2021, Google officially made Core Web Vitals a ranking factor. Since then, website speed and user experience directly impact where your site appears in search results. Yet most business owners have no idea what these metrics are or how to improve them.
@@ -257,7 +257,7 @@ Google rewards fast, user-friendly sites with higher rankings. Higher rankings m
     excerpt: 'A behind-the-scenes look at our exact strategy — content pillars, posting schedule, engagement hacks, and the one metric most people ignore.',
     date: 'Mar 25, 2026',
     readTime: '6 min read',
-    image: '/images/blog5.png',
+    image: '/images/blog5.webp',
     author: 'Aditya Chaudhary',
     content: `
 When a D2C skincare brand approached us with zero social media presence and a tight 90-day deadline, we knew generic "post 3 times a week" advice wouldn't cut it. Here's the exact playbook we used to grow their Instagram from 0 to 50,000 engaged followers.
@@ -346,7 +346,7 @@ Likes are vanity. Comments are good. But **saves** are the strongest signal to I
     excerpt: 'Retention rates drop rapidly in the first few seconds. Learn our top video editing formulas, sound design tactics, and text animations to capture attention instantly.',
     date: 'Mar 10, 2026',
     readTime: '5 min read',
-    image: '/images/blog6.png',
+    image: '/images/blog6.webp',
     author: 'Harsh Upadhyay',
     content: `
 The average person scrolls through 91 metres of content on their phone every day. In that infinite scroll, your video has less than 3 seconds to prove it's worth watching. Miss that window, and your content — no matter how brilliant — dies in silence.

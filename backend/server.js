@@ -25,7 +25,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nexhook';
 async function ensureDbConnected(req, res, next) {
   // If accessing public assets or frontend files, we don't strictly need to block on DB connection
   // but since Express routes everything, we block for all /api requests.
-  if (!req.path.startsWith('/api')) {
+  if (!req.path.startsWith('/api') || req.path === '/api/db-status') {
     return next();
   }
 

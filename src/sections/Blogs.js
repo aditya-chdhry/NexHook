@@ -1,12 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BLOGS_DATA } from './BlogPage';
+import useReveal from '../components/useReveal';
 import './Blogs.css';
 
 export default function Blogs() {
   const gridRef = useRef(null);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  useReveal();
 
   useEffect(() => {
     const fetchBlogs = async () => {

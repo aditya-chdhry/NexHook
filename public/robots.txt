@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /admin-login
 
-Sitemap: https://nexhook.in/sitemap.xml
+Sitemap: https://www.nexhook.in/sitemap.xml

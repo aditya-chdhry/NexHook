@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Navbar          from './components/Navbar';
 import useReveal       from './components/useReveal';
 import Hero            from './sections/Hero';
@@ -16,6 +17,15 @@ import './App.css';
 
 export default function MainWebsite() {
   useReveal();
+  const [loadChatbot, setLoadChatbot] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadChatbot(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="App">
       <Navbar />
@@ -30,7 +40,7 @@ export default function MainWebsite() {
       <AuditContact />
       <FAQ />
       <Footer />
-      <WhatsAppChatbot />
+      {loadChatbot && <WhatsAppChatbot />}
     </div>
   );
 }

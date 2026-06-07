@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './FAQ.css';
 
 const FAQS = [
@@ -61,6 +61,35 @@ const FAQS = [
 export default function FAQ() {
   const [open, setOpen] = useState(null);
   const [openSub, setOpenSub] = useState({});
+
+  useEffect(() => {
+    // Generate FAQ Schema JSON-LD
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": FAQS.map((faq) => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'faq-schema-markup';
+    script.innerHTML = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.getElementById('faq-schema-markup');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
 
   const toggle = (i) => {
     setOpen(open === i ? null : i);

@@ -1,25 +1,29 @@
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import MainWebsite   from './MainWebsite';
-import BlogPage      from './sections/BlogPage';
-import BlogPost      from './sections/BlogPost';
-import AdminLogin    from './admin/AdminLogin';
-import AdminLayout   from './admin/AdminLayout';
-import Dashboard     from './admin/Dashboard';
-import Leads         from './admin/Leads';
-import Invoices      from './admin/Invoices';
-import Clients       from './admin/Clients';
-import Payments      from './admin/Payments';
-import Tasks         from './admin/Tasks';
-import Settings      from './admin/Settings';
-import Meetings      from './admin/Meetings';
-import LeadAutomation from './admin/LeadAutomation';
-import SocialManager from './admin/SocialManager';
-import SalesTeam     from './admin/SalesTeam';
-import ChatbotData   from './admin/ChatbotData';
-import PrintInvoice  from './admin/PrintInvoice';
-import ProtectedRoute from './admin/ProtectedRoute';
 import './App.css';
+
+// Lazy load non-homepage routes
+const BlogPage = lazy(() => import('./sections/BlogPage'));
+const BlogPost = lazy(() => import('./sections/BlogPost'));
+const AdminLogin = lazy(() => import('./admin/AdminLogin'));
+const AdminLayout = lazy(() => import('./admin/AdminLayout'));
+const Dashboard = lazy(() => import('./admin/Dashboard'));
+const Leads = lazy(() => import('./admin/Leads'));
+const Invoices = lazy(() => import('./admin/Invoices'));
+const Clients = lazy(() => import('./admin/Clients'));
+const Payments = lazy(() => import('./admin/Payments'));
+const Tasks = lazy(() => import('./admin/Tasks'));
+const Settings = lazy(() => import('./admin/Settings'));
+const Meetings = lazy(() => import('./admin/Meetings'));
+const LeadAutomation = lazy(() => import('./admin/LeadAutomation'));
+const SocialManager = lazy(() => import('./admin/SocialManager'));
+const SalesTeam = lazy(() => import('./admin/SalesTeam'));
+const ChatbotData = lazy(() => import('./admin/ChatbotData'));
+const PrintInvoice = lazy(() => import('./admin/PrintInvoice'));
+const ProtectedRoute = lazy(() => import('./admin/ProtectedRoute'));
+const AdminBlogs = lazy(() => import('./admin/Blogs'));
 
 export default function App() {
   return (
@@ -36,6 +40,7 @@ export default function App() {
         }>
           <Route index                    element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard"         element={<Dashboard />} />
+          <Route path="blogs"             element={<AdminBlogs />} />
           <Route path="leads"             element={<Leads />} />
           <Route path="invoices"          element={<Invoices />} />
           <Route path="clients"           element={<Clients />} />

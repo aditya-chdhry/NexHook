@@ -115,38 +115,46 @@ export default function AuditModal({ isOpen, onClose }) {
     if (Object.values(newErrors).some(err => err)) return;
 
     setStatus('loading');
-    try {
-      // 1. Try to save locally in the DB (non-blocking)
-      try {
-        await addLeadFromForm({
-          name:    form.name,
-          email:   form.email,
-          phone:   form.phone,
-          company: form.company,
-          service: form.service,
-          message: form.message,
-        });
-      } catch (dbErr) {
-        console.warn('Local database save failed, proceeding with Formspree dispatch:', dbErr);
-      }
+    const formData = new FormData(e.target);
 
-      // 2. Submit to Formspree (critical path for lead notifications)
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(e.target),
+    try {
+      // 1. Wait only for local DB save
+      await addLeadFromForm({
+        name:    form.name,
+        email:   form.email,
+        phone:   form.phone,
+        company: form.company,
+        service: form.service,
+        message: form.message,
       });
 
-      if (res.ok) {
-        setStatus('success');
-        setForm({ name: '', email: '', phone: '', company: '', service: '', message: '' });
-        setErrors({});
-      } else {
-        throw new Error('Formspree returned non-ok status');
-      }
+      // 2. Submit to Formspree in the background (non-blocking)
+      fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData,
+      }).catch(err => {
+        console.error('Background Formspree submission failed:', err);
+      });
+
+      setStatus('success');
+      setForm({ name: '', email: '', phone: '', company: '', service: '', message: '' });
+      setErrors({});
     } catch (err) {
-      console.error('Lead submission failed:', err);
-      setStatus('error');
+      console.error('Lead database save failed, attempting background Formspree recovery:', err);
+      
+      // Fallback: Send to Formspree even if DB save fails
+      fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData,
+      }).catch(fErr => {
+        console.error('Background Formspree recovery failed:', fErr);
+      });
+
+      setStatus('success');
+      setForm({ name: '', email: '', phone: '', company: '', service: '', message: '' });
+      setErrors({});
     }
   };
 

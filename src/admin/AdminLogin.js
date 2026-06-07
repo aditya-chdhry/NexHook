@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminLogin } from './adminData';
+import { adminLogin, isAdminLoggedIn } from './adminData';
 import './AdminLogin.css';
 
 export default function AdminLogin() {
@@ -10,10 +10,15 @@ export default function AdminLogin() {
   const [showPw, setShowPw] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isAdminLoggedIn()) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); setError('');
-    await new Promise(r => setTimeout(r, 700));
     const success = await adminLogin(creds.username, creds.password);
     if (success) {
       navigate('/admin/dashboard');

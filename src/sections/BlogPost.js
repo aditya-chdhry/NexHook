@@ -117,9 +117,55 @@ export default function BlogPost() {
   useReveal();
   const { id } = useParams();
   const navigate = useNavigate();
-  const blog = useMemo(() => BLOGS_DATA.find(b => b.id === id), [id]);
+  const [blog, setBlog] = useState(null);
+  const [moreBlogs, setMoreBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showAuditModal, setShowAuditModal] = useState(false);
   const [activeId, setActiveId] = useState('');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const loadBlogData = async () => {
+      setLoading(true);
+      try {
+        const url = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? `/api/blogs/${id}`
+          : `/_/backend/api/blogs/${id}`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setBlog(data);
+        } else {
+          const fallback = BLOGS_DATA.find(b => b.id === id);
+          setBlog(fallback || null);
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog post:', err);
+        const fallback = BLOGS_DATA.find(b => b.id === id);
+        setBlog(fallback || null);
+      }
+
+      try {
+        const urlList = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? '/api/blogs'
+          : '/_/backend/api/blogs';
+        const resList = await fetch(urlList);
+        if (resList.ok) {
+          const list = await resList.json();
+          const published = list.filter(b => b.id !== id && b.published !== false);
+          setMoreBlogs(published.slice(0, 3));
+        } else {
+          setMoreBlogs(BLOGS_DATA.filter(b => b.id !== id).slice(0, 3));
+        }
+      } catch (err) {
+        console.error('Failed to fetch more blogs:', err);
+        setMoreBlogs(BLOGS_DATA.filter(b => b.id !== id).slice(0, 3));
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadBlogData();
+  }, [id]);
 
   const shareUrl = useMemo(() => {
     if (!blog) return '';
@@ -190,10 +236,6 @@ export default function BlogPost() {
   }, [blog]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
-
-  useEffect(() => {
     const headingElements = headings.map(h => document.getElementById(h.id)).filter(Boolean);
     if (headingElements.length === 0) return;
 
@@ -214,6 +256,17 @@ export default function BlogPost() {
     headingElements.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, [headings]);
+
+  if (loading) {
+    return (
+      <div className="App">
+        <Navbar onAuditClick={() => { console.log("BlogPost Loading Navbar Clicked"); setShowAuditModal(true); }} />
+        <div style={{ textAlign: 'center', padding: '120px 0', color: '#64748b' }}>
+          <h2>Loading insights...</h2>
+        </div>
+      </div>
+    );
+  }
 
   if (!blog) {
     return (
@@ -255,7 +308,14 @@ export default function BlogPost() {
 
         {/* Cover Image */}
         <div className="bp-cover rev">
-          <img src={blog.image} alt={blog.title} className="bp-cover-img" />
+          <img 
+            src={blog.image} 
+            alt={blog.title} 
+            className="bp-cover-img" 
+            fetchpriority="high"
+            width="800"
+            height="420"
+          />
         </div>
 
         {/* 2-Column Split: TOC on Left, Content on Right */}
@@ -362,10 +422,16 @@ export default function BlogPost() {
         <div className="bp-more rev">
           <h3>More from our blog</h3>
           <div className="bp-more-grid">
-            {BLOGS_DATA.filter(b => b.id !== blog.id).slice(0, 3).map(b => (
+            {moreBlogs.map(b => (
               <Link to={`/blogs/${b.id}`} className="bp-more-card" key={b.id}>
                 <div className="bp-more-cover">
-                  <img src={b.image} alt={b.title} />
+                  <img 
+                    src={b.image} 
+                    alt={b.title} 
+                    loading="lazy"
+                    width="300"
+                    height="140"
+                  />
                 </div>
                 <div className="bp-more-body">
                   <span className="bp-more-tag">{b.tag}</span>

@@ -146,7 +146,7 @@ export default function WhatsAppChatbot() {
         <div className="wa-header">
           <div className="wa-avatar-wrap">
             <div className="wa-avatar">
-              <img src="/logo.png" alt="NexHook Logo" style={{ width: '26px', height: '26px', objectFit: 'contain' }} />
+              <img src="/logo.png" alt="NexHook Logo" width="26" height="26" style={{ width: '26px', height: '26px', objectFit: 'contain' }} />
             </div>
             <div className="wa-status-dot animated"></div>
           </div>
@@ -261,7 +261,7 @@ export default function WhatsAppChatbot() {
         )}
         
         {/* NexHook Logo */}
-        <img src="/logo.png" alt="NexHook Logo" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+        <img src="/logo.png" alt="NexHook Logo" width="30" height="30" style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
       </button>
     </div>
   );

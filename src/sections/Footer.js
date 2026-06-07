@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="foot-grid">
         <div className="foot-brand">
           <div className="foot-logo">
-            <img src="/logo.png" alt="NexHook" className="foot-logo-img" />
+            <img src="/logo.png" alt="NexHook" className="foot-logo-img" width="24" height="24" />
             <span className="foot-logo-text">Nex<span>Hook</span></span>
           </div>
           <p>NexHook Services is a modern IT solutions company focused on delivering innovative, scalable, and reliable digital products. We help businesses transform their ideas into powerful technology solutions that drive growth and success.</p>

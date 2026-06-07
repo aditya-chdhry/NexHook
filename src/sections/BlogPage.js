@@ -680,13 +680,33 @@ export default function BlogPage() {
         {/* Blog Grid */}
         <section className="blogpage-grid-section">
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '48px 0', color: '#64748b' }}>Loading insights...</div>
+            <div className="blogpage-grid">
+              {[1, 2, 3, 4, 5, 6].map((_, i) => (
+                <div className="blogpage-card skeleton" key={i} style={{ minHeight: '460px' }}>
+                  <div className="blogpage-card-cover skeleton-pulse" style={{ height: '200px' }}></div>
+                  <div className="blogpage-card-body" style={{ padding: '28px 24px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <div className="skeleton-pulse" style={{ height: '16px', width: '30%', marginBottom: '16px' }}></div>
+                    <div className="skeleton-pulse" style={{ height: '26px', width: '90%', marginBottom: '12px' }}></div>
+                    <div className="skeleton-pulse" style={{ height: '14px', width: '100%', marginBottom: '8px' }}></div>
+                    <div className="skeleton-pulse" style={{ height: '14px', width: '70%', marginBottom: 'auto' }}></div>
+                    <div className="skeleton-pulse" style={{ height: '14px', width: '40%', marginTop: '24px' }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="blogpage-grid">
               {blogs.map((blog, i) => (
                 <Link to={`/blogs/${blog.id}`} className={`blogpage-card rev d${(i % 4) + 1}`} key={blog.id}>
                   <div className="blogpage-card-cover">
-                    <img src={blog.image} alt={blog.title} className="blogpage-card-img" />
+                    <img 
+                      src={blog.image} 
+                      alt={blog.title} 
+                      className="blogpage-card-img" 
+                      width="360" 
+                      height="200" 
+                      loading="lazy" 
+                    />
                     <span className="blog-tag">{blog.tag}</span>
                   </div>
                   <div className="blogpage-card-body">

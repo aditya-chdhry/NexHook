@@ -88,6 +88,8 @@
   overflow: hidden;
   margin-bottom: 48px;
   border: 1px solid var(--border);
+  aspect-ratio: 40 / 21;
+  background: var(--bg2);
 }
 .bp-cover-img {
   width: 100%;

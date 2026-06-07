@@ -80,7 +80,7 @@ export default function Team() {
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </button>
-            <img src={lightbox.img} alt={lightbox.name} className="lightbox-img" />
+            <img src={lightbox.img} alt={lightbox.name} className="lightbox-img" width="400" height="400" />
             <div className="lightbox-info">
               <h3>{lightbox.name}</h3>
               <p>{lightbox.role}</p>

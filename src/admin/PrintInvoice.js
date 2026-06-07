@@ -130,7 +130,7 @@ export default function PrintInvoice() {
 
             <div className="inv-qr">
               <h4 className="inv-section-title" style={{textAlign:'center'}}>Scan to Pay via UPI</h4>
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=8533904534@ptsbi&pn=Aditya&am=${total}&cu=INR`} alt="UPI QR" />
+              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=8533904534@ptsbi&pn=Aditya&am=${total}&cu=INR`} alt="UPI QR" width="150" height="150" />
               <p>Maximum of 1 lakh can be transferred<br/>via upi in a single day</p>
               <strong style={{fontSize:'0.85rem'}}>8533904534@ptsbi</strong>
             </div>

@@ -101,7 +101,7 @@ export default function Navbar({ onAuditClick }) {
   return (
     <header className={`nh-nav${solid ? ' solid' : ''}${!isHome ? ' sticky-nav' : ''}`}>
       <button className="nh-logo" onClick={goHome}>
-        <img src="/logo.png" alt="NexHook" className="nh-logo-img" />
+        <img src="/logo.png" alt="NexHook" className="nh-logo-img" width="24" height="24" />
         <span className="nh-logo-text">Nex<span>Hook</span></span>
       </button>
 

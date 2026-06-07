@@ -87,9 +87,18 @@ export default function Blogs() {
       </div>
       <div className="blog-grid" ref={gridRef}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: '#64748b', gridColumn: '1 / -1' }}>
-            Loading insights...
-          </div>
+          [1, 2, 3].map((_, i) => (
+            <div className="blog-card skeleton" key={i} style={{ minHeight: '430px' }}>
+              <div className="blog-cover skeleton-pulse" style={{ height: '180px' }}></div>
+              <div className="blog-body" style={{ padding: '24px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <div className="skeleton-pulse" style={{ height: '16px', width: '30%', marginBottom: '16px' }}></div>
+                <div className="skeleton-pulse" style={{ height: '24px', width: '90%', marginBottom: '12px' }}></div>
+                <div className="skeleton-pulse" style={{ height: '14px', width: '100%', marginBottom: '8px' }}></div>
+                <div className="skeleton-pulse" style={{ height: '14px', width: '70%', marginBottom: 'auto' }}></div>
+                <div className="skeleton-pulse" style={{ height: '14px', width: '40%', marginTop: '24px' }}></div>
+              </div>
+            </div>
+          ))
         ) : (
           blogs.map((b, i) => (
             <Link to={`/blogs/${b.id}`} className={`blog-card rev d${(i % 4) + 1}`} key={b.id}>

@@ -19,7 +19,15 @@
   padding: 20px 40px 80px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 700px; /* Prevent layout shift during loading */
 }
+
+/* Skeleton Loader Styles */
+.blogpage-card.skeleton {
+  pointer-events: none;
+  background: var(--card);
+}
+
 
 .blogpage-grid {
   display: grid;

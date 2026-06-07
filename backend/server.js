@@ -6,9 +6,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { google } from 'googleapis';
-import { Lead, Invoice, Client, Payment, Task, Meeting, OutreachLead, AdminUser, SocialMetric, SalesAttribution, ChatbotConversation } from './models.js';
+import { Lead, Invoice, Client, Payment, Task, Meeting, OutreachLead, AdminUser, SocialMetric, SalesAttribution, ChatbotConversation, BlogPost } from './models.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,14 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
 let dbError = null;
 let connectPromise = null;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/nexhook';
@@ -51,6 +60,18 @@ async function ensureDbConnected(req, res, next) {
           const hashedPassword = await bcrypt.hash('Adityas12@#', 10);
           await AdminUser.create({ username: 'aditya_nexhook', password: hashedPassword });
           console.log('🛠️ Custom admin created (aditya_nexhook / Adityas12@#)');
+        }
+
+        // Seed default blog posts if empty
+        const blogExists = await BlogPost.countDocuments();
+        if (blogExists === 0) {
+          try {
+            const seedData = JSON.parse(fs.readFileSync(path.join(__dirname, 'blogs_seed.json'), 'utf8'));
+            await BlogPost.insertMany(seedData);
+            console.log(`📚 Seeded ${seedData.length} blog posts successfully!`);
+          } catch (seedErr) {
+            console.error('❌ Failed to seed blog posts:', seedErr);
+          }
         }
 
         // Seed default social metrics if empty
@@ -143,6 +164,77 @@ app.post('/api/auth/login', async (req, res) => {
 
   const token = jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET || 'super_secret_jwt_key_nexhook_2024');
   res.json({ token, username });
+});
+
+app.get('/api/auth/verify', auth, (req, res) => {
+  res.json({ success: true, username: req.user.username });
+});
+
+/* ─── BLOG POSTS CRUD ─── */
+app.get('/api/blogs', async (req, res) => {
+  try {
+    const token = req.header('Authorization');
+    let isAdmin = false;
+    if (token) {
+      try {
+        jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET || 'super_secret_jwt_key_nexhook_2024');
+        isAdmin = true;
+      } catch (e) {}
+    }
+    const filter = isAdmin ? {} : { published: true };
+    const blogs = await BlogPost.find(filter).sort({ createdAt: -1 });
+    res.json(blogs);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.get('/api/blogs/:id', async (req, res) => {
+  try {
+    const blog = await BlogPost.findOne({ id: req.params.id });
+    if (!blog) return res.status(404).json({ error: 'Blog not found' });
+    res.json(blog);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/api/blogs', auth, async (req, res) => {
+  try {
+    const { id, title, content } = req.body;
+    if (!id || !title || !content) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    const exists = await BlogPost.findOne({ id });
+    if (exists) {
+      return res.status(400).json({ error: 'Slug/ID already exists' });
+    }
+    const blog = new BlogPost(req.body);
+    await blog.save();
+    res.json(blog);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.put('/api/blogs/:id', auth, async (req, res) => {
+  try {
+    const blog = await BlogPost.findOneAndUpdate({ id: req.params.id }, req.body, { new: true });
+    if (!blog) return res.status(404).json({ error: 'Blog not found' });
+    res.json(blog);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/blogs/:id', auth, async (req, res) => {
+  try {
+    const blog = await BlogPost.findOneAndDelete({ id: req.params.id });
+    if (!blog) return res.status(404).json({ error: 'Blog not found' });
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 app.post('/api/auth/change-password', auth, async (req, res) => {

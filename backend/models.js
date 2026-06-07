@@ -141,3 +141,19 @@ export const AdminUser = mongoose.model('AdminUser', AdminUserSchema);
 export const SocialMetric = mongoose.model('SocialMetric', SocialMetricSchema);
 export const SalesAttribution = mongoose.model('SalesAttribution', SalesAttributionSchema);
 export const ChatbotConversation = mongoose.model('ChatbotConversation', ChatbotConversationSchema);
+
+const BlogPostSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  tag: String,
+  title: { type: String, required: true },
+  excerpt: String,
+  date: { type: String, default: () => new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) },
+  readTime: String,
+  image: String,
+  author: { type: String, default: 'Aditya Chaudhary' },
+  content: { type: String, required: true },
+  published: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+export const BlogPost = mongoose.model('BlogPost', BlogPostSchema);

@@ -36,7 +36,7 @@ export default function Footer() {
           <h4>Contact</h4>
           <ul>
             <li><a href="mailto:info@nexhook.in">info@nexhook.in</a></li>
-            <li><a href="tel:+919876543210">+91 9625591763</a></li>
+            <li><a href="tel:+919625591763">+91 9625591763</a></li>
             <li><a href="https://wa.me/919625591763" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
             <li><span>Gurugram, Haryana, India</span></li>
           </ul>

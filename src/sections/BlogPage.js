@@ -637,9 +637,31 @@ The best design-dev teams don't just hand off files — they collaborate through
 export default function BlogPage() {
   useReveal();
   const [showAuditModal, setShowAuditModal] = useState(false);
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const fetchBlogs = async () => {
+      try {
+        const url = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? '/api/blogs'
+          : '/_/backend/api/blogs';
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setBlogs(data);
+        } else {
+          setBlogs(BLOGS_DATA);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic blogs:', err);
+        setBlogs(BLOGS_DATA);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
   }, []);
 
   return (
@@ -657,33 +679,37 @@ export default function BlogPage() {
 
         {/* Blog Grid */}
         <section className="blogpage-grid-section">
-          <div className="blogpage-grid">
-            {BLOGS_DATA.map((blog, i) => (
-              <Link to={`/blogs/${blog.id}`} className={`blogpage-card rev d${(i % 4) + 1}`} key={blog.id}>
-                <div className="blogpage-card-cover">
-                  <img src={blog.image} alt={blog.title} className="blogpage-card-img" />
-                  <span className="blog-tag">{blog.tag}</span>
-                </div>
-                <div className="blogpage-card-body">
-                  <h2 className="blogpage-card-title">{blog.title}</h2>
-                  <p className="blogpage-card-excerpt">{blog.excerpt}</p>
-                  <div className="blogpage-card-meta">
-                    <span className="blogpage-card-author">By {blog.author}</span>
-                    <span className="blog-dot">·</span>
-                    <span>{blog.date}</span>
-                    <span className="blog-dot">·</span>
-                    <span>{blog.readTime}</span>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '48px 0', color: '#64748b' }}>Loading insights...</div>
+          ) : (
+            <div className="blogpage-grid">
+              {blogs.map((blog, i) => (
+                <Link to={`/blogs/${blog.id}`} className={`blogpage-card rev d${(i % 4) + 1}`} key={blog.id}>
+                  <div className="blogpage-card-cover">
+                    <img src={blog.image} alt={blog.title} className="blogpage-card-img" />
+                    <span className="blog-tag">{blog.tag}</span>
                   </div>
-                  <span className="blogpage-read-link">
-                    Read Article
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  <div className="blogpage-card-body">
+                    <h2 className="blogpage-card-title">{blog.title}</h2>
+                    <p className="blogpage-card-excerpt">{blog.excerpt}</p>
+                    <div className="blogpage-card-meta">
+                      <span className="blogpage-card-author">By {blog.author}</span>
+                      <span className="blog-dot">·</span>
+                      <span>{blog.date}</span>
+                      <span className="blog-dot">·</span>
+                      <span>{blog.readTime}</span>
+                    </div>
+                    <span className="blogpage-read-link">
+                      Read Article
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* CTA */}

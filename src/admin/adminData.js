@@ -203,3 +203,20 @@ export const incrementSalesAttribution = (platform) => {
     body: JSON.stringify({ platform })
   }).then(res => res.json());
 };
+
+export async function verifyAdminSession() {
+  const token = sessionStorage.getItem('nexhook_token');
+  if (!token) return false;
+  try {
+    const res = await fetch(`${API_URL}/auth/verify`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Session verification failed:', err);
+    return false;
+  }
+}

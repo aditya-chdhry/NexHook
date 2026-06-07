@@ -42,7 +42,14 @@ export default function Team() {
                 onKeyDown={(e) => e.key === 'Enter' && openLightbox(m)}
                 title={`View ${m.name}'s photo`}
               >
-                <img src={m.img} alt={m.name} className="member-photo" />
+                <img 
+                  src={m.img} 
+                  alt={m.name} 
+                  className="member-photo" 
+                  loading="lazy" 
+                  width="80" 
+                  height="80" 
+                />
               </div>
             ) : (
               <div className="member-av" style={{ background: m.grad }}>{m.init}</div>

@@ -18,6 +18,7 @@ import SalesTeam     from './admin/SalesTeam';
 import ChatbotData   from './admin/ChatbotData';
 import PrintInvoice  from './admin/PrintInvoice';
 import ProtectedRoute from './admin/ProtectedRoute';
+import AdminBlogs    from './admin/Blogs';
 import './App.css';
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
       }>
         <Route index                    element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard"         element={<Dashboard />} />
+        <Route path="blogs"             element={<AdminBlogs />} />
         <Route path="leads"             element={<Leads />} />
         <Route path="invoices"          element={<Invoices />} />
         <Route path="clients"           element={<Clients />} />

@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MainWebsite   from './MainWebsite';
 import './App.css';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 // Lazy load non-homepage routes
 const BlogPage = lazy(() => import('./sections/BlogPage'));
@@ -54,6 +56,8 @@ export default function App() {
         </Route>
         <Route path="/admin/invoices/:id/print" element={<ProtectedRoute><PrintInvoice /></ProtectedRoute>} />
       </Routes>
+      <SpeedInsights />
+      <Analytics />
     </Suspense>
   );
 }

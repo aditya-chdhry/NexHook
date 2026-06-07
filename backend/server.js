@@ -181,7 +181,7 @@ app.get('/api/blogs', async (req, res) => {
         isAdmin = true;
       } catch (e) {}
     }
-    const filter = isAdmin ? {} : { published: true };
+    const filter = isAdmin ? {} : { published: { $ne: false } };
     const blogs = await BlogPost.find(filter).sort({ createdAt: -1 });
     res.json(blogs);
   } catch (e) {

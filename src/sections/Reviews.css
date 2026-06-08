@@ -23,6 +23,8 @@
   background: var(--card); padding: 32px 28px; transition: background .3s;
   border-radius: var(--r);
   border: 1px solid var(--border);
+  user-select: none;
+  -webkit-user-select: none;
 }
 .review-card:hover { background: var(--card); }
 

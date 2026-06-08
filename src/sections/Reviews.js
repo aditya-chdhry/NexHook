@@ -61,7 +61,12 @@ export default function Reviews() {
       <h2 className="sec-title rev">What Clients <span>Write About Us</span></h2>
       <div className="reviews-grid" ref={gridRef}>
         {REVIEWS.map((r, i) => (
-          <div className={`review-card rev d${(i % 3) + 1}`} key={r.name}>
+          <div 
+            className={`review-card rev d${(i % 3) + 1}`} 
+            key={r.name}
+            draggable={false}
+            onDragStart={(e) => e.preventDefault()}
+          >
             <div className="review-stars">★★★★★</div>
             <p className="review-text">{r.text}</p>
             <div className="reviewer">

@@ -101,7 +101,13 @@ export default function Blogs() {
           ))
         ) : (
           blogs.map((b, i) => (
-            <Link to={`/blogs/${b.id}`} className={`blog-card rev d${(i % 4) + 1}`} key={b.id}>
+            <Link 
+              to={`/blogs/${b.id}`} 
+              className={`blog-card rev d${(i % 4) + 1}`} 
+              key={b.id}
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
+            >
               <div className="blog-cover">
                 <img 
                   src={b.image} 
@@ -110,6 +116,8 @@ export default function Blogs() {
                   loading="lazy" 
                   width="360" 
                   height="180" 
+                  draggable={false}
+                  onDragStart={(e) => e.preventDefault()}
                 />
                 <span className="blog-tag">{b.tag}</span>
               </div>

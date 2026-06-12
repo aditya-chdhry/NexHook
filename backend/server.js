@@ -134,7 +134,8 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
     host: process.env.EMAIL_HOST,
     port: parseInt(process.env.EMAIL_PORT || '587'),
     secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for 587
-    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+    tls: { rejectUnauthorized: false }
   };
   
   transporter = nodemailer.createTransport(transportConfig);

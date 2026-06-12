@@ -126,10 +126,18 @@ app.get('/api/db-status', (req, res) => {
 
 let transporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-  transporter = nodemailer.createTransport({
+  const isGmail = !process.env.EMAIL_HOST || process.env.EMAIL_HOST.includes('gmail');
+  const transportConfig = isGmail ? {
     service: 'gmail',
     auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-  });
+  } : {
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_PORT || '587'),
+    secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for 587
+    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+  };
+  
+  transporter = nodemailer.createTransport(transportConfig);
   transporter.verify((error, success) => {
     if (error) {
       console.log('❌ Mail Transporter Connection Error:', error.message);
@@ -140,6 +148,8 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
 } else {
   console.log('⚠️ Mail Transporter skipped: EMAIL_USER or EMAIL_PASS not set in environment.');
 }
+
+const getEmailFrom = () => process.env.EMAIL_FROM || process.env.EMAIL_USER || 'admin@nexhook.com';
 
 const auth = (req, res, next) => {
   const token = req.header('Authorization');
@@ -305,7 +315,7 @@ app.post('/api/tasks', auth, async (req, res) => {
 
     if (task.assigneeEmail) {
       const mailOptions = {
-        from: process.env.EMAIL_USER || 'admin@nexhook.com',
+        from: getEmailFrom(),
         to: task.assigneeEmail,
         subject: `New Task Assigned: ${task.title} [NexHook]`,
         html: `<h3>Hello ${task.assigneeName},</h3><p>You have been assigned a new task.</p>
@@ -525,7 +535,7 @@ app.post('/api/meetings', auth, async (req, res) => {
     const meeting = new Meeting(req.body);
     await meeting.save();
 
-    const fromEmail = process.env.EMAIL_USER || 'admin@nexhook.com';
+    const fromEmail = getEmailFrom();
     const icsContent = generateICS(meeting);
 
     // ─── EMAIL 1: Professional Client Email with Calendar Invite ───
@@ -680,7 +690,7 @@ setInterval(async () => {
         }
 
         const mailOptions = {
-          from: process.env.EMAIL_USER || 'admin@nexhook.com',
+          from: getEmailFrom(),
           to: meeting.clientEmail,
           subject: `⚡ Your Call with NexHook Starts Now — Join Here`,
           html: getEmailTemplate({
@@ -968,7 +978,7 @@ app.post('/api/outreach-campaign/trigger', auth, async (req, res) => {
         }
 
         const mailOptions = {
-          from: process.env.EMAIL_USER || 'admin@nexhook.com',
+          from: getEmailFrom(),
           to: recipientEmail,
           subject: `${subjectPrefix}${data.name}, question about ${data.company}'s operations in ${loc}`,
           html: `

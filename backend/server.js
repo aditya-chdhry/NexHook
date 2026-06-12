@@ -526,6 +526,32 @@ function getEmailTemplate({
 </html>`;
 }
 
+app.get('/api/public/test-smtp', async (req, res) => {
+  if (!transporter) {
+    return res.status(500).json({ error: 'Mail transporter not initialized. Ensure EMAIL_USER and EMAIL_PASS are set.' });
+  }
+  const mailOptions = {
+    from: getEmailFrom(),
+    to: req.query.to || process.env.EMAIL_USER || 'adityaschdhry@gmail.com',
+    subject: 'NexHook SMTP Test Email',
+    html: '<h3>NexHook SMTP Diagnostics</h3><p>If you see this, your SMTP settings are working perfectly!</p>'
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    res.json({ success: true, messageId: info.messageId, from: mailOptions.from, to: mailOptions.to, info });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+      code: err.code,
+      command: err.command,
+      from: mailOptions.from,
+      to: mailOptions.to,
+      stack: err.stack
+    });
+  }
+});
+
 /* ─── MEETINGS WITH AUTOMATED LINK SENDING & REMINDERS ─── */
 app.get('/api/meetings', auth, async (req, res) => res.json(await Meeting.find().sort({ _id: -1 })));
 

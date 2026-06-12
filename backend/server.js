@@ -360,6 +360,161 @@ function generateICS(meeting) {
   ].join('\r\n');
 }
 
+function getEmailTemplate({
+  title,
+  subtitle,
+  recipientName,
+  introText,
+  meetingDetails,
+  ctaLink,
+  ctaText,
+  expectationTitle,
+  expectationText,
+  signOffText
+}) {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; color: #1e293b;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 30px 15px;">
+    <tr>
+      <td align="center">
+        <!-- Email Wrapper -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+          
+          <!-- Brand Header -->
+          <tr>
+            <td style="background-color: #0f172a; padding: 28px 24px; text-align: center; border-bottom: 3px solid #2459e7;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td align="center" style="padding-bottom: 8px;">
+                    <a href="https://www.nexhook.in" target="_blank" style="text-decoration: none;">
+                      <img src="https://www.nexhook.in/logo.png" alt="NexHook Logo" style="height: 44px; width: auto; display: block; border: 0;" />
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <span style="color: #ffffff; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; display: inline-block;">
+                      Nex<span style="color: #2459e7;">Hook</span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 4px;">
+                    <span style="color: #94a3b8; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; display: inline-block;">
+                      ${subtitle || 'IT Solutions & Workflow Automation'}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Email Body -->
+          <tr>
+            <td style="padding: 35px 30px 24px 30px;">
+              <h2 style="color: #0f172a; font-size: 19px; font-weight: 700; margin: 0 0 16px 0;">Hi ${recipientName},</h2>
+              <p style="color: #334155; font-size: 15px; line-height: 1.6; margin: 0 0 24px 0;">
+                ${introText}
+              </p>
+              
+              <!-- Ticket-Style Details Card -->
+              <div style="background-color: #f8fafc; border-left: 4px solid #2459e7; border-radius: 8px; padding: 20px; margin: 24px 0; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                  ${meetingDetails}
+                </table>
+              </div>
+              
+              <!-- Join Call Button -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 28px 0 20px 0;">
+                <tr>
+                  <td align="center">
+                    <a href="${ctaLink}" target="_blank" style="background: linear-gradient(135deg, #2459e7, #38bdf8); color: #ffffff; padding: 13px 32px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(36,89,231,0.25); text-align: center;">
+                      ${ctaText}
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" style="padding-top: 10px;">
+                    <span style="color: #94a3b8; font-size: 12px;">Calendar invite (.ics) attached — add to your calendar automatically.</span>
+                  </td>
+                </tr>
+              </table>
+              
+              <!-- Highlighted Expectation Section -->
+              ${expectationText ? `
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #eff6ff; border-left: 4px solid #2459e7; border-radius: 4px; margin: 24px 0 0 0;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <p style="margin: 0; font-size: 13.5px; color: #1e3a8a; line-height: 1.6;">
+                      <strong>${expectationTitle || 'What to expect:'}</strong> ${expectationText}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              ` : ''}
+              
+              <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 32px 0 20px 0;" />
+              
+              <p style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0;">
+                ${signOffText || 'Looking forward to speaking with you!<br/><strong>The NexHook Team</strong>'}
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Professional Footer -->
+          <tr>
+            <td style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 28px 24px; text-align: center;">
+              <p style="color: #64748b; font-size: 13px; line-height: 1.6; margin: 0 0 16px 0;">
+                Questions? Email us at <a href="mailto:info@nexhook.in" style="color: #2459e7; text-decoration: none; font-weight: 600;">info@nexhook.in</a> or call <a href="tel:+919625591763" style="color: #2459e7; text-decoration: none; font-weight: 600;">+91 9625591763</a>
+              </p>
+              
+              <!-- Social Media Icon Badges -->
+              <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto 16px auto;">
+                <tr>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.linkedin.com/company/nexhook" target="_blank" style="text-decoration: none;">
+                      <img src="https://img.icons8.com/color/48/linkedin.png" width="26" height="26" alt="LinkedIn" style="display: block; border: 0;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.instagram.com/nexhook.in/" target="_blank" style="text-decoration: none;">
+                      <img src="https://img.icons8.com/color/48/instagram-new.png" width="26" height="26" alt="Instagram" style="display: block; border: 0;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.youtube.com/@NexHookPOV" target="_blank" style="text-decoration: none;">
+                      <img src="https://img.icons8.com/color/48/youtube-play.png" width="26" height="26" alt="YouTube" style="display: block; border: 0;" />
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://wa.me/919625591763" target="_blank" style="text-decoration: none;">
+                      <img src="https://img.icons8.com/color/48/whatsapp.png" width="26" height="26" alt="WhatsApp" style="display: block; border: 0;" />
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              
+              <p style="color: #94a3b8; font-size: 11px; margin: 0; line-height: 1.5;">
+                &copy; 2026 NexHook Services. All rights reserved.<br/>
+                Gurugram, Haryana, India.
+              </p>
+            </td>
+          </tr>
+          
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 /* ─── MEETINGS WITH AUTOMATED LINK SENDING & REMINDERS ─── */
 app.get('/api/meetings', auth, async (req, res) => res.json(await Meeting.find().sort({ _id: -1 })));
 
@@ -375,35 +530,56 @@ app.post('/api/meetings', auth, async (req, res) => {
 
     // ─── EMAIL 1: Professional Client Email with Calendar Invite ───
     if (meeting.clientEmail) {
+      let emailSubject = `📅 Meeting Confirmed — NexHook x ${meeting.clientName} | ${meeting.date}`;
+      let title = 'Consultation Call Confirmed';
+      let introText = "Thank you for your time! Your consultation call with the NexHook team has been confirmed. We're excited to discuss how we can help accelerate your business growth and deliver robust, scalable technology solutions.";
+      let expectationTitle = "What to expect:";
+      let expectationText = "We'll understand your current workflows, identify automation and development opportunities, and present a tailored plan on how NexHook can help optimize your operations — no obligations.";
+      let signOffText = "Looking forward to speaking with you!<br/><strong>The NexHook Team</strong>";
+
+      if (meeting.meetingType === 'discovery') {
+        emailSubject = `📅 Discovery Call Confirmed — NexHook x ${meeting.clientName} | ${meeting.date}`;
+        title = 'Discovery Call Confirmed';
+        introText = "Thank you for scheduling a discovery call with NexHook! We are thrilled to connect with you and explore how we can bring your ideas to life. During this session, we will deep dive into your business objectives, technical requirements, and strategic vision.";
+        expectationText = "We will map out your high-level project goals, discuss potential tech stacks (MERN, Next.js, Cloud architectures), align on timelines, and walk you through our development methodology. Our aim is to lay a solid foundation for a successful partnership.";
+      } else if (meeting.meetingType === 'internal') {
+        emailSubject = `📅 Internal Team Sync Scheduled — NexHook | ${meeting.date}`;
+        title = 'Internal Team Sync Scheduled';
+        introText = "This is a notification that an internal team meeting has been scheduled within the NexHook team. Please review the details below and ensure you are prepared with your project updates, task statuses, and any active blockers.";
+        expectationTitle = "Focus areas:";
+        expectationText = "We will sync on recent client feedback, review task assignments and sprint progress, address technical bottlenecks, and align on upcoming project deliverables to ensure high-quality execution.";
+        signOffText = "Let's build something great!<br/><strong>NexHook Admin</strong>";
+      }
+
+      const formattedType = meeting.meetingType === 'discovery' ? 'Discovery Call' : 
+                            meeting.meetingType === 'internal' ? 'Internal Team Sync' : 'Consultation Call';
+
+      let detailsHtml = `
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; width: 130px;">📋 Meeting Type</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${formattedType}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📅 Date</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.date}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">🕐 Time</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.time} IST</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📍 Platform</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.meetingLink.includes('zoom') ? 'Zoom' : meeting.meetingLink.includes('meet.google') ? 'Google Meet' : 'Video Call'}</td></tr>
+      `;
+
+      if (meeting.notes) {
+        detailsHtml += `<tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; vertical-align: top;">📝 Agenda / Notes</td><td style="padding: 8px 0; color: #334155; font-size: 14px; line-height: 1.5;">${meeting.notes}</td></tr>`;
+      }
+
       const clientMail = {
-        from: fromEmail, to: meeting.clientEmail,
-        subject: `📅 Meeting Confirmed — NexHook x ${meeting.clientName} | ${meeting.date}`,
-        html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
-          <div style="background:linear-gradient(135deg,#1a365d,#2459e7);padding:32px 30px;text-align:center;">
-            <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800;">NexHook</h1>
-            <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:13px;">IT Solutions & Workflow Automation</p>
-          </div>
-          <div style="padding:30px;">
-            <h2 style="color:#1a202c;font-size:20px;margin:0 0 8px;">Hi ${meeting.clientName},</h2>
-            <p style="color:#4a5568;font-size:15px;line-height:1.7;">Thank you for your time! Your consultation call with the NexHook team has been confirmed. We're excited to discuss how we can help accelerate your business growth.</p>
-            <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px;margin:20px 0;">
-              <table style="width:100%;border-collapse:collapse;font-size:14px;color:#4a5568;">
-                <tr><td style="padding:8px 0;font-weight:700;color:#1a202c;width:120px;">📅 Date</td><td>${meeting.date}</td></tr>
-                <tr><td style="padding:8px 0;font-weight:700;color:#1a202c;">🕐 Time</td><td>${meeting.time} IST</td></tr>
-                <tr><td style="padding:8px 0;font-weight:700;color:#1a202c;">📍 Platform</td><td>${meeting.meetingLink.includes('zoom')?'Zoom':meeting.meetingLink.includes('meet.google')?'Google Meet':'Video Call'}</td></tr>
-                ${meeting.notes ? `<tr><td style="padding:8px 0;font-weight:700;color:#1a202c;">📝 Agenda</td><td>${meeting.notes}</td></tr>` : ''}
-              </table>
-            </div>
-            <div style="text-align:center;margin:28px 0;">
-              <a href="${meeting.meetingLink}" style="background:linear-gradient(135deg,#2459e7,#38bdf8);color:#fff;padding:14px 36px;text-decoration:none;border-radius:10px;font-weight:700;font-size:16px;display:inline-block;box-shadow:0 4px 16px rgba(36,89,231,0.3);">🔗 Join Meeting</a>
-              <p style="color:#a0aec0;font-size:12px;margin:10px 0 0;">Calendar invite (.ics) attached — add to your calendar automatically.</p>
-            </div>
-            <div style="background:#eff6ff;border-left:4px solid #2459e7;padding:16px;border-radius:0 8px 8px 0;">
-              <p style="margin:0;font-size:13px;color:#4a5568;line-height:1.6;"><strong>What to expect:</strong> We'll understand your current workflows, identify automation opportunities, and present a tailored plan — no obligations.</p>
-            </div>
-            <hr style="border:0;border-top:1px solid #e2e8f0;margin:28px 0;"/>
-            <p style="font-size:13px;color:#718096;">Looking forward to speaking with you!<br/><strong>NexHook Team</strong></p>
-          </div></div>`,
+        from: fromEmail,
+        to: meeting.clientEmail,
+        subject: emailSubject,
+        html: getEmailTemplate({
+          title,
+          recipientName: meeting.clientName,
+          introText,
+          meetingDetails: detailsHtml,
+          ctaLink: meeting.meetingLink,
+          ctaText: '🔗 Join Meeting',
+          expectationTitle,
+          expectationText,
+          signOffText
+        }),
         attachments: [{ filename:'nexhook-meeting.ics', content:icsContent, contentType:'text/calendar; charset=utf-8; method=REQUEST' }]
       };
       try { if(transporter){transporter.sendMail(clientMail).catch(e=>console.error('Client email err:',e.message));}else{console.log('✉️ [MOCK CLIENT]',meeting.clientEmail);} } catch(e){}
@@ -411,31 +587,37 @@ app.post('/api/meetings', auth, async (req, res) => {
 
     // ─── EMAIL 2: Internal Team Briefing Email ───
     if (meeting.teamEmail) {
+      const formattedType = meeting.meetingType === 'discovery' ? 'Discovery Call' : 
+                            meeting.meetingType === 'internal' ? 'Internal Team Sync' : 'Client Call';
+
+      let detailsHtml = `
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; width: 130px;">📋 Meeting Type</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${formattedType}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">👤 Client Name</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.clientName}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📧 Client Email</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.clientEmail}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📅 Date</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.date}</td></tr>
+        <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">🕐 Time</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.time} IST</td></tr>
+      `;
+
+      if (meeting.notes) {
+        detailsHtml += `<tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; vertical-align: top;">📝 Host Notes</td><td style="padding: 8px 0; color: #334155; font-size: 14px; line-height: 1.5;">${meeting.notes}</td></tr>`;
+      }
+
       const teamMail = {
-        from: fromEmail, to: meeting.teamEmail,
-        subject: `🔔 [Internal] Client Call — ${meeting.clientName} | ${meeting.date} ${meeting.time}`,
-        html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0;">
-          <div style="background:linear-gradient(135deg,#0f172a,#1e293b);padding:24px 30px;">
-            <h2 style="color:#f1f5f9;margin:0;font-size:18px;">📋 Team Briefing — New Call Scheduled</h2>
-          </div>
-          <div style="padding:28px;">
-            <p style="color:#334155;font-size:15px;line-height:1.6;">A new ${meeting.meetingType==='discovery'?'discovery call':'client call'} has been scheduled. Prepare accordingly.</p>
-            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin:0 0 20px;">
-              <table style="width:100%;border-collapse:collapse;font-size:14px;color:#475569;">
-                <tr><td style="padding:6px 0;font-weight:600;width:130px;">Client</td><td>${meeting.clientName}</td></tr>
-                <tr><td style="padding:6px 0;font-weight:600;">Email</td><td>${meeting.clientEmail}</td></tr>
-                <tr><td style="padding:6px 0;font-weight:600;">Date & Time</td><td>${meeting.date} at ${meeting.time} IST</td></tr>
-                <tr><td style="padding:6px 0;font-weight:600;">Link</td><td><a href="${meeting.meetingLink}" style="color:#2459e7;">${meeting.meetingLink}</a></td></tr>
-                ${meeting.notes ? `<tr><td style="padding:6px 0;font-weight:600;">Notes</td><td>${meeting.notes}</td></tr>` : ''}
-              </table>
-            </div>
-            <div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:14px;border-radius:0 8px 8px 0;">
-              <p style="margin:0;font-size:13px;color:#92400e;"><strong>⚡ Action:</strong> Join on time. Have the client profile and proposal deck ready.</p>
-            </div>
-            <div style="text-align:center;margin:24px 0 0;">
-              <a href="${meeting.meetingLink}" style="background:#0f172a;color:#fff;padding:12px 30px;text-decoration:none;border-radius:8px;font-weight:600;display:inline-block;">🖥️ Join Call</a>
-            </div>
-          </div></div>`,
+        from: fromEmail,
+        to: meeting.teamEmail,
+        subject: `🔔 [Internal] Call Scheduled — ${meeting.clientName} | ${meeting.date} ${meeting.time}`,
+        html: getEmailTemplate({
+          title: 'Internal Team Briefing',
+          subtitle: 'New Call Scheduled Notification',
+          recipientName: 'Team Member',
+          introText: `A new ${formattedType.toLowerCase()} has been scheduled. Please review the details below and ensure you prepare and attend on time.`,
+          meetingDetails: detailsHtml,
+          ctaLink: meeting.meetingLink,
+          ctaText: '🖥️ Join Call',
+          expectationTitle: '⚡ Action Required:',
+          expectationText: 'Join the call on time. Ensure the client profile, previous conversations/notes, and the proposal or pitch deck are ready.',
+          signOffText: 'Let\'s run a great session!<br/><strong>NexHook Admin</strong>'
+        }),
         attachments: [{ filename:'nexhook-meeting.ics', content:icsContent, contentType:'text/calendar; charset=utf-8; method=REQUEST' }]
       };
       try { if(transporter){transporter.sendMail(teamMail).catch(e=>console.error('Team email err:',e.message));}else{console.log('✉️ [MOCK TEAM]',meeting.teamEmail);} } catch(e){}
@@ -485,22 +667,34 @@ setInterval(async () => {
 
       // Send meeting link exactly when it's about to start (starting within next 10 mins or up to 30 mins late)
       if (diffMins <= 10 && diffMins >= -30) {
+        const formattedType = meeting.meetingType === 'discovery' ? 'Discovery Call' : 
+                              meeting.meetingType === 'internal' ? 'Internal Team Sync' : 'Consultation Call';
+
+        let detailsHtml = `
+          <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; width: 130px;">📋 Meeting Type</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${formattedType}</td></tr>
+          <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📅 Date</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.date}</td></tr>
+          <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">🕐 Time</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.time} IST</td></tr>
+        `;
+        if (meeting.notes) {
+          detailsHtml += `<tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; vertical-align: top;">📝 Notes</td><td style="padding: 8px 0; color: #334155; font-size: 14px; line-height: 1.5;">${meeting.notes}</td></tr>`;
+        }
+
         const mailOptions = {
           from: process.env.EMAIL_USER || 'admin@nexhook.com',
           to: meeting.clientEmail,
           subject: `⚡ Your Call with NexHook Starts Now — Join Here`,
-          html: `
-            <h3>Hello ${meeting.clientName},</h3>
-            <p>Your scheduled call with NexHook is starting now! Please click the button below to join the call:</p>
-            <div style="background:#f0f7ff; border:1px solid #1181c9; padding:25px; border-radius:12px; margin:20px 0; text-align:center;">
-              <p style="font-size:1.15rem; margin-top:0; color:#1e293b;"><strong>📅 Date:</strong> ${meeting.date} at ${meeting.time} (IST)</p>
-              <a href="${meeting.meetingLink}" style="background:#1181c9; color:white; padding:12px 28px; text-decoration:none; border-radius:8px; font-weight:600; display:inline-block; font-size:1.1rem; box-shadow: 0 4px 12px rgba(17,129,201,0.25);">
-                Join Call Now
-              </a>
-            </div>
-            ${meeting.notes ? `<p><strong>Host Notes:</strong> ${meeting.notes}</p>` : ''}
-            <p>Best regards,<br>NexHook Team</p>
-          `
+          html: getEmailTemplate({
+            title: 'Call Starting Now',
+            subtitle: 'Live Meeting Reminder',
+            recipientName: meeting.clientName,
+            introText: 'Your scheduled call with the NexHook team is starting right now! Please click the button below to join the video call immediately.',
+            meetingDetails: detailsHtml,
+            ctaLink: meeting.meetingLink,
+            ctaText: '⚡ Join Call Now',
+            expectationTitle: 'Quick Tip:',
+            expectationText: 'Please make sure your camera and microphone are working properly before joining. See you in the meeting!',
+            signOffText: 'Speak soon!<br/><strong>The NexHook Team</strong>'
+          })
         };
 
         if (transporter) {
@@ -511,11 +705,32 @@ setInterval(async () => {
 
         // Also remind team
         if (meeting.teamEmail) {
+          let teamDetailsHtml = `
+            <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; width: 130px;">📋 Meeting Type</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${formattedType}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">👤 Client Name</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.clientName}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">📧 Client Email</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.clientEmail}</td></tr>
+            <tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px;">🕐 Time</td><td style="padding: 8px 0; color: #334155; font-size: 14px;">${meeting.time} IST</td></tr>
+          `;
+          if (meeting.notes) {
+            teamDetailsHtml += `<tr><td style="padding: 8px 0; font-weight: 700; color: #0f172a; font-size: 14px; vertical-align: top;">📝 Notes</td><td style="padding: 8px 0; color: #334155; font-size: 14px; line-height: 1.5;">${meeting.notes}</td></tr>`;
+          }
+
           const teamRem = {
             from: process.env.EMAIL_USER || 'admin@nexhook.com',
             to: meeting.teamEmail,
             subject: `🔔 [NOW] Client Call — ${meeting.clientName} | JOIN`,
-            html: `<div style="font-family:Arial,sans-serif;max-width:550px;margin:0 auto;background:#0f172a;border-radius:12px;padding:28px;color:#e2e8f0;"><h2 style="color:#f59e0b;margin:0 0 12px;">⚡ Call Starting Now</h2><p style="margin:0 0 16px;font-size:14px;color:#94a3b8;">Client: <strong style="color:#f1f5f9;">${meeting.clientName}</strong> (${meeting.clientEmail})</p><p style="margin:0 0 20px;font-size:14px;color:#94a3b8;">Time: <strong style="color:#f1f5f9;">${meeting.date} at ${meeting.time} IST</strong></p><a href="${meeting.meetingLink}" style="background:#2459e7;color:#fff;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:700;display:inline-block;">Join Now →</a></div>`
+            html: getEmailTemplate({
+              title: 'Call Starting Now',
+              subtitle: 'Internal Team Alert',
+              recipientName: 'Team Member',
+              introText: `Your scheduled session with **${meeting.clientName}** is starting right now! Click the button below to join the call immediately.`,
+              meetingDetails: teamDetailsHtml,
+              ctaLink: meeting.meetingLink,
+              ctaText: '🖥️ Join Call',
+              expectationTitle: 'Action:',
+              expectationText: 'Open the client CRM profile, pull up previous audit details, and be prepared to take notes.',
+              signOffText: 'Let\'s run a great sync!<br/><strong>NexHook Admin</strong>'
+            })
           };
           if(transporter){transporter.sendMail(teamRem).catch(e=>console.error('Team reminder err:',e.message));}
         }
